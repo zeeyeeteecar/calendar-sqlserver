@@ -1,0 +1,485 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Table_RCD_Tax_Receipt {
+  DonationID                   Int       @id(map: "Table_RCD_Tax_Receipt$PrimaryKey") @default(autoincrement())
+  MemberID                     Int?      @default(0, map: "DF__Table_RCD__Membe__7EF6D905")
+  DonorNo_bak                  Int?
+  Donation_ReceiptNo           String?   @db.NVarChar(20)
+  Donation_Amount              Float?    @default(0, map: "DF__Table_RCD__Donat__7FEAFD3E") @db.Money
+  Donation_Value               Float?    @default(0, map: "DF__Table_RCD__Donat__00DF2177") @db.Money
+  Donation_Date                DateTime?
+  Donation_PaidBy              String?   @db.NVarChar(255)
+  Donation_PP                  Boolean?  @default(false, map: "DF__Table_RCD__Donat__01D345B0")
+  Donation_Description         String?   @db.NVarChar(Max)
+  Donation_TaxReceiptMonth     DateTime?
+  Donation_TaxReceiptNo        String?   @db.NVarChar(30)
+  Donation_NeedTaxReceiptOrNot Boolean?  @default(false, map: "DF__Table_RCD__Donat__02C769E9")
+  Appraised_By                 String?   @db.NVarChar(50)
+  Address_of_Appraiser         String?   @db.NVarChar(50)
+  By_Email                     String?   @db.NVarChar(50)
+  TaxReceiptRequired           Boolean?  @default(true, map: "DF__Table_RCD__TaxRe__03BB8E22")
+  Donation_Notes               String?   @db.NVarChar(255)
+
+  @@index([MemberID], map: "Table_RCD_Tax_Receipt$MemberID")
+}
+
+model tAdmin {
+  ID           Int       @id(map: "tAdmin$PrimaryKey") @default(autoincrement())
+  StaffCode    String?   @db.NVarChar(255)
+  StaffFName   String?   @db.NVarChar(255)
+  StaffLName   String?   @db.NVarChar(255)
+  Login        String?   @db.NVarChar(50)
+  Password     String?   @db.NVarChar(50)
+  UserLevel    String?   @db.NVarChar(1)
+  UserType     String?   @db.NVarChar(2)
+  UserActivate String?   @db.NVarChar(20)
+  UserDate     DateTime?
+  BoardStaff   String?   @db.NVarChar(50)
+  MemberID     String?   @db.NVarChar(10)
+
+  @@index([ID], map: "tAdmin$AdminID")
+  @@index([MemberID], map: "tAdmin$MemberID")
+  @@index([StaffCode], map: "tAdmin$StaffCode")
+}
+
+model tbl_UserPermission {
+  userPermission_id         Int     @id(map: "tbl_UserPermission$PrimaryKey") @default(autoincrement())
+  userPermissionCategory    String? @db.NVarChar(255)
+  userPermissionCode        String? @db.NVarChar(255)
+  userPermissionDescription String? @db.NVarChar(Max)
+
+  @@index([userPermission_id], map: "tbl_UserPermission$userPermission_id")
+}
+
+model tbl_userPermission_user {
+  ID                Int  @id(map: "tbl_userPermission_user$PrimaryKey") @default(autoincrement())
+  userPermission_id Int? @default(0, map: "DF__tbl_userP__userP__04AFB25B")
+  user_id           Int? @default(0, map: "DF__tbl_userP__user___05A3D694")
+
+  @@index([user_id], map: "tbl_userPermission_user$user_id")
+  @@index([userPermission_id], map: "tbl_userPermission_user$userPermission_id")
+}
+
+model tEvent_DateRandom {
+  ID               Int       @id(map: "tEvent_DateRandom$PrimaryKey") @default(autoincrement())
+  Event_ID         Int?      @default(0, map: "DF__tEvent_Da__Event__0697FACD")
+  Event_DateRandom DateTime?
+
+  @@index([Event_ID], map: "tEvent_DateRandom$Event_ID")
+  @@index([ID], map: "tEvent_DateRandom$ID")
+}
+
+model tEvents {
+  Event_ID       Int       @id(map: "tEvents$PrimaryKey") @default(autoincrement())
+  Date_Added     DateTime?
+  Start_Date     DateTime?
+  End_Date       DateTime?
+  Start_Time     DateTime?
+  End_Time       DateTime?
+  Event_Title    String?   @db.NVarChar(200)
+  Event_Fee      Float?    @default(0, map: "DF__tEvents__Event_F__078C1F06") @db.Money
+  Event_Details  String?   @db.NVarChar(Max)
+  Activity_Room  String?   @db.NVarChar(5)
+  Board_Room     String?   @db.NVarChar(255)
+  Resource_Room  String?   @db.NVarChar(255)
+  Computer_Lab   String?   @db.NVarChar(255)
+  SC_Room        String?   @db.NVarChar(255)
+  Event_Location String?   @db.NVarChar(50)
+  Big_Event      String?   @db.NVarChar(50)
+  Event_Weekday  String?   @default("1234567", map: "DF__tEvents__Event_W__0880433F") @db.NVarChar(50)
+  Event_Type     String?   @db.NVarChar(50)
+  Event_TypeCode String?   @db.NVarChar(20)
+  Event_Type_ID  Int?      @default(0, map: "DF__tEvents__Event_T__09746778")
+  ShowInCalendar String?   @db.NVarChar(255)
+  PersonInCharge String?   @db.NVarChar(50)
+  PersonAdmin    String?   @db.NVarChar(20)
+  Poster         String?   @db.NVarChar(20)
+  StatHoliday    String?   @db.NVarChar(3)
+  FlexTimeType   Int?      @default(0, map: "DF__tEvents__FlexTim__0A688BB1") @db.SmallInt
+  FlexTimeLunch  Int?      @default(0, map: "DF__tEvents__FlexTim__0B5CAFEA") @db.SmallInt
+  PersonOperate  String?   @db.NVarChar(255)
+
+  @@index([Event_ID], map: "tEvents$ClassID")
+  @@index([Event_TypeCode], map: "tEvents$Event_TypeCode")
+  @@index([Event_Title], map: "tEvents$InstructorID")
+  @@index([Event_Type_ID], map: "tEvents$PaymentReportCategoryID")
+}
+
+model tEventsOtherDay {
+  ID                       Int       @id(map: "tEventsOtherDay$PrimaryKey") @default(autoincrement())
+  Event_ID                 Int?      @default(0, map: "DF__tEventsOt__Event__0C50D423")
+  EventOtherDate           DateTime?
+  EventOtherDate_TimeStart DateTime?
+  EventOtherDate_TimeEnd   DateTime?
+
+  @@index([Event_ID], map: "tEventsOtherDay$Event_ID")
+  @@index([ID], map: "tEventsOtherDay$ID")
+}
+
+model tEventType {
+  ID            Int      @id(map: "tEventType$PrimaryKey") @default(0, map: "DF__tEventType__ID__0D44F85C")
+  EventType     String?  @db.NVarChar(50)
+  EventColor    String?  @db.NVarChar(10)
+  EventTypeCode String?  @db.NVarChar(20)
+  PaymentReport Boolean? @default(false, map: "DF__tEventTyp__Payme__0E391C95")
+
+  @@index([EventTypeCode], map: "tEventType$EventTypeCode")
+  @@index([ID], map: "tEventType$ID")
+}
+
+model tIntake {
+  tIntakeID                          Int       @id(map: "tIntake$PrimaryKey") @default(autoincrement())
+  tMasterID                          Int?      @default(0, map: "DF__tIntake__tMaster__0F2D40CE")
+  FillDate                           DateTime?
+  UpdatedDate                        DateTime?
+  Company                            String?   @db.NVarChar(50)
+  RefNo                              String?   @db.NVarChar(100)
+  FirstName                          String?   @db.NVarChar(50)
+  LastName                           String?   @db.NVarChar(50)
+  Gender                             String?   @db.NVarChar(50)
+  Dob                                DateTime?
+  nianling                           String?   @db.NVarChar(50)
+  HomePhone                          String?   @db.NVarChar(50)
+  WorkPhone                          String?   @db.NVarChar(50)
+  CellPhone                          String?   @db.NVarChar(50)
+  Fax                                String?   @db.NVarChar(50)
+  Email                              String?   @db.NVarChar(50)
+  Address                            String?   @db.NVarChar(200)
+  Photo                              String?   @db.NVarChar(255)
+  RenewalDate                        DateTime?
+  RenewalReceiptNo                   String?   @db.NVarChar(50)
+  RenewalAmount                      Int?      @default(0, map: "DF__tIntake__Renewal__10216507")
+  Marital                            String?   @db.NVarChar(50)
+  LivingSituation                    String?   @db.NVarChar(50)
+  SameHouseHoldSpousePartner         String?   @db.NVarChar(Max)
+  SameHouseHoldParents               String?   @db.NVarChar(50)
+  SameHouseHoldCaregiver             String?   @db.NVarChar(50)
+  SameHouseHoldSiblingsFamilyMembers String?   @db.NVarChar(50)
+  SameHouseHoldOther                 String?   @db.NVarChar(50)
+  WhatGoal                           String?   @db.NVarChar(Max)
+  Aboriginal                         String?   @db.NVarChar(50)
+  Immigrant                          String?   @db.NVarChar(50)
+  ImmigrantYear                      String?   @db.NVarChar(50)
+  FirstLanguage                      String?   @db.NVarChar(50)
+  ProvincialDisability               String?   @db.NVarChar(200)
+  ProvincialIncome                   String?   @db.NVarChar(70)
+  LivingAssistance                   String?   @db.NVarChar(150)
+  HighestEducation                   String?   @db.NVarChar(100)
+  WorkingSituation                   String?   @db.NVarChar(50)
+  CurrentIndustry                    String?   @db.NVarChar(50)
+  WeekHour                           String?   @db.NVarChar(50)
+  LessThanPrefer                     String?   @db.NVarChar(50)
+  Goal                               String?   @db.NVarChar(Max)
+  WhatYouWantToSee                   String?   @db.NVarChar(Max)
+  DisabilityType                     String?   @db.NVarChar(Max)
+  ProblemConcern                     String?   @db.NVarChar(Max)
+  Medication                         String?   @db.NVarChar(Max)
+  SpecialNeed                        String?   @db.NVarChar(Max)
+  ImportantInformation               String?   @db.NVarChar(Max)
+  ApplicantName                      String?   @db.NVarChar(50)
+  GuardianName                       String?   @db.NVarChar(150)
+  GuardianInfo                       String?   @db.NVarChar(50)
+  FirstContactStaff                  String?   @db.NVarChar(50)
+  FirstContactDate                   DateTime?
+  InTakeStaff                        String?   @db.NVarChar(50)
+  IntakeDate                         DateTime?
+  InterviewStaff                     String?   @db.NVarChar(50)
+  InterviewDate                      DateTime?
+  DataEntryStaff                     String?   @db.NVarChar(150)
+  DataEntryDate                      DateTime?
+  Note                               String?   @db.NVarChar(Max)
+  ischeck                            String?   @db.NVarChar(50)
+  isrecycle                          String?   @db.NVarChar(50)
+
+  @@index([tIntakeID], map: "tIntake$ID1")
+  @@index([tMasterID], map: "tIntake$tMasterID")
+}
+
+model tMaster {
+  tMasterID      Int       @id(map: "tMaster$PrimaryKey") @unique(map: "tMaster$tMasterID") @default(autoincrement())
+  MasterID       Int       @default(0, map: "DF__tMaster__MasterI__11158940")
+  Company        String?   @db.NVarChar(75)
+  Mr_Ms          String?   @db.NVarChar(20)
+  DoB            DateTime?
+  Gender         String?   @db.NVarChar(50)
+  Lname          String?   @db.NVarChar(75)
+  Fname          String?   @db.NVarChar(75)
+  Family         String?   @db.NVarChar(50)
+  Title          String?   @db.NVarChar(70)
+  Address        String?   @db.NVarChar(100)
+  Address2       String?   @db.NVarChar(100)
+  City           String?   @default("Richmond", map: "DF__tMaster__City__1209AD79") @db.NVarChar(50)
+  Prov           String?   @default("BC", map: "DF__tMaster__Prov__12FDD1B2") @db.NVarChar(20)
+  PostalCode     String?   @db.NVarChar(20)
+  PhoneHome      String?   @db.NVarChar(50)
+  Cell           String?   @db.NVarChar(45)
+  Fax            String?   @db.NVarChar(40)
+  Email          String?   @db.NVarChar(75)
+  Email2         String?   @db.NVarChar(75)
+  RenewalDate    DateTime?
+  Paid           Float?    @db.Money
+  Fees_waived    Boolean?  @default(false, map: "DF__tMaster__Fees wa__13F1F5EB") @map("Fees waived")
+  Mail           String?   @db.NVarChar(20)
+  AK             Boolean?  @default(false, map: "DF__tMaster__AK__14E61A24")
+  OoP            Boolean?  @default(false, map: "DF__tMaster__OoP__15DA3E5D")
+  ChineseNews    Boolean?  @default(false, map: "DF__tMaster__Chinese__16CE6296")
+  Disability     String?   @db.NVarChar(75)
+  HeardFrom      String?   @db.NVarChar(50)
+  DateofReg      DateTime?
+  Year           Int?
+  MbrNo          String?   @unique(map: "tMaster$Mbr #") @db.NVarChar(50)
+  VotingMbr      Boolean?  @default(false, map: "DF__tMaster__VotingM__17C286CF")
+  VotingMbr_Life Boolean?  @default(false, map: "DF__tMaster__VotingM__18B6AB08")
+  Participant    Boolean?  @default(false, map: "DF__tMaster__Partici__19AACF41")
+  Affiliate      Boolean?  @default(false, map: "DF__tMaster__Affilia__1A9EF37A")
+  Volunteer      Boolean?  @default(false, map: "DF__tMaster__Volunte__1B9317B3")
+  Board          Boolean?  @default(false, map: "DF__tMaster__Board__1C873BEC")
+  Staff          Boolean?  @default(false, map: "DF__tMaster__Staff__1D7B6025")
+  CSG            Boolean?  @default(false, map: "DF__tMaster__CSG__1E6F845E")
+  Status_Donor   Boolean?  @default(false, map: "DF__tMaster__Status___1F63A897")
+  Status_PP      Boolean?  @default(false, map: "DF__tMaster__Status___2057CCD0")
+  Status_Member  Boolean?  @default(false, map: "DF__tMaster__Status___214BF109")
+  Login          Boolean?  @default(false, map: "DF__tMaster__Login__22401542")
+  Agency         Boolean?  @default(false, map: "DF__tMaster__Agency__2334397B")
+  VolParty       Boolean?  @default(false, map: "DF__tMaster__VolPart__24285DB4")
+  Youth          Boolean?  @default(false, map: "DF__tMaster__Youth__251C81ED")
+  FPSNC          Boolean?  @default(false, map: "DF__tMaster__FPSNC__2610A626")
+  ILRC           Boolean?  @default(false, map: "DF__tMaster__ILRC__2704CA5F")
+  ILCanada       Boolean?  @default(false, map: "DF__tMaster__ILCanad__27F8EE98")
+  VIP            Boolean?  @default(false, map: "DF__tMaster__VIP__28ED12D1")
+  Councilor      Boolean?  @default(false, map: "DF__tMaster__Council__29E1370A")
+  MP             Boolean?  @default(false, map: "DF__tMaster__MP__2AD55B43")
+  RCSAC          Boolean?  @default(false, map: "DF__tMaster__RCSAC__2BC97F7C")
+  Spon           String?   @db.NVarChar(50)
+  Media          Boolean?  @default(false, map: "DF__tMaster__Media__2CBDA3B5")
+  ParticipantNo  String?   @db.NVarChar(50)
+  VI             Boolean?  @default(false, map: "DF__tMaster__VI__2DB1C7EE")
+  Notes          String?   @db.NVarChar(Max)
+  ischeck        Boolean?  @default(false, map: "DF__tMaster__ischeck__2EA5EC27")
+  isrecycle      Boolean?  @default(false, map: "DF__tMaster__isrecyc__2F9A1060")
+  Photo          String?   @db.NVarChar(50)
+  Marital        String?   @db.NVarChar(50)
+
+  @@index([Fname], map: "tMaster$Fname1")
+  @@index([Lname], map: "tMaster$Lname")
+  @@index([Paid], map: "tMaster$Paid")
+  @@index([PostalCode], map: "tMaster$Postal Code")
+}
+
+model tMemberRegEvent {
+  ID                             Int       @id(map: "tMemberRegEvent$PrimaryKey") @unique(map: "tMemberRegEvent$ID") @default(autoincrement())
+  MemberID                       Int?      @default(0, map: "DF__tMemberRe__Membe__308E3499")
+  CustomerNameF                  String?   @db.NVarChar(255)
+  CustomerNameL                  String?   @db.NVarChar(255)
+  PayCategoryID                  Int?      @default(0, map: "DF__tMemberRe__PayCa__318258D2")
+  PayCategoryCode                String?   @db.NVarChar(255)
+  PaymentCategoryTitle           String?   @db.NVarChar(255)
+  EventID                        Int?      @default(0, map: "DF__tMemberRe__Event__32767D0B")
+  MemberOrVol                    String?   @db.NVarChar(255)
+  MemberPayment                  Float?    @default(0, map: "DF__tMemberRe__Membe__336AA144") @db.Money
+  MemberPaymentBy                String?   @db.NVarChar(255)
+  MemberPaymentDate              DateTime?
+  MemberPaymentReceiptNo         String?   @db.NVarChar(50)
+  MemberPaymentStaff             String?   @db.NVarChar(255)
+  Membership_Reg_Date            DateTime?
+  Membership_Renewal_Date        DateTime?
+  Membership_Voting_Date         DateTime?
+  Membership_LifeTimeVoting_Date DateTime?
+  Notes                          String?   @db.NVarChar(Max)
+  if_VOID                        Boolean?  @default(false, map: "DF__tMemberRe__if_VO__345EC57D")
+  PreHold                        Boolean?  @default(false, map: "DF__tMemberRe__PreHo__3552E9B6")
+  LogRegDate                     DateTime?
+  LogRegStaff                    String?   @db.NVarChar(255)
+  LogRegNote                     String?   @db.NVarChar(Max)
+
+  @@index([EventID], map: "tMemberRegEvent$EventID")
+  @@index([if_VOID], map: "tMemberRegEvent$if_VOID")
+  @@index([MemberID], map: "tMemberRegEvent$MemberID")
+  @@index([PayCategoryCode], map: "tMemberRegEvent$PayCategoryCode")
+  @@index([PayCategoryID], map: "tMemberRegEvent$PayCategoryID")
+}
+
+model tMemberRegEvent_VOID {
+  ID                      Int       @id(map: "tMemberRegEvent_VOID$PrimaryKey") @unique(map: "tMemberRegEvent_VOID$ID") @default(autoincrement())
+  MemberID                Int?      @default(0, map: "DF__tMemberRe__Membe__36470DEF")
+  CustomerNameF           String?   @db.NVarChar(255)
+  CustomerNameL           String?   @db.NVarChar(255)
+  PayCategoryID           Int?      @default(0, map: "DF__tMemberRe__PayCa__373B3228")
+  PayCategoryCode         String?   @db.NVarChar(255)
+  PaymentCategoryTitle    String?   @db.NVarChar(255)
+  EventID                 Int?      @default(0, map: "DF__tMemberRe__Event__382F5661")
+  MemberOrVol             String?   @db.NVarChar(255)
+  MemberPayment           Float?    @default(0, map: "DF__tMemberRe__Membe__39237A9A") @db.Money
+  MemberPaymentBy         String?   @db.NVarChar(255)
+  MemberPaymentDate       DateTime?
+  MemberPaymentReceiptNo  String?   @db.NVarChar(50)
+  MemberPaymentStaff      String?   @db.NVarChar(255)
+  Membership_Reg_Date     DateTime?
+  Membership_Renewal_Date DateTime?
+  Notes                   String?   @db.NVarChar(Max)
+  if_VOID                 Boolean?  @default(false, map: "DF__tMemberRe__if_VO__3A179ED3")
+  PreHold                 Boolean?  @default(false, map: "DF__tMemberRe__PreHo__3B0BC30C")
+  LogRegDate              DateTime?
+  LogRegStaff             String?   @db.NVarChar(255)
+  LogRegNote              String?   @db.NVarChar(Max)
+
+  @@index([EventID], map: "tMemberRegEvent_VOID$EventID")
+  @@index([MemberID], map: "tMemberRegEvent_VOID$MemberID")
+  @@index([PayCategoryCode], map: "tMemberRegEvent_VOID$PayCategoryCode")
+  @@index([PayCategoryID], map: "tMemberRegEvent_VOID$PayCategoryID")
+  @@index([if_VOID], map: "tMemberRegEvent_VOID$VOID")
+}
+
+model tMemberRegEventbackup {
+  ID                     Int       @id(map: "tMemberRegEventbackup$PrimaryKey") @default(autoincrement())
+  MemberID               Int?      @default(0, map: "DF__tMemberRe__Membe__3BFFE745")
+  EventID                Int?      @default(0, map: "DF__tMemberRe__Event__3CF40B7E")
+  MemberOrVol            String?   @db.NVarChar(255)
+  MemberPayment          Float?    @default(0, map: "DF__tMemberRe__Membe__3DE82FB7") @db.Money
+  MemberPaymentDate      DateTime?
+  MemberPaymentReceiptNo String?   @db.NVarChar(50)
+  Notes                  String?   @db.NVarChar(Max)
+
+  @@index([EventID], map: "tMemberRegEventbackup$EventID")
+  @@index([MemberID], map: "tMemberRegEventbackup$MemberID")
+}
+
+model tMembership {
+  Membership_ID     Int       @id(map: "tMembership$PrimaryKey") @default(autoincrement())
+  MemberID          Int?      @default(0, map: "DF__tMembersh__Membe__3EDC53F0")
+  ReceiptNo         String?   @db.NVarChar(255)
+  Reg_Date          DateTime?
+  Renewal_Date      DateTime?
+  Membership_Amount Int?      @default(0, map: "DF__tMembersh__Membe__3FD07829")
+
+  @@index([MemberID], map: "tMembership$MemberID")
+  @@index([Membership_ID], map: "tMembership$Membership_ID")
+}
+
+model tNews {
+  ID         Int       @id(map: "tNews$PrimaryKey") @default(autoincrement())
+  News       String?   @db.NVarChar(Max)
+  PostPerson String?   @db.NVarChar(50)
+  PostDate   DateTime?
+
+  @@index([ID], map: "tNews$ID")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model tOperate {
+  ID          Int       @id(map: "tOperate$PrimaryKey") @default(autoincrement())
+  OperateTime DateTime?
+  OperateName String?   @db.NVarChar(50)
+  UserName    String?   @db.NVarChar(50)
+  Event_Title String?   @db.NVarChar(100)
+  UserIP      String?   @db.NVarChar(50)
+
+  @@index([ID], map: "tOperate$ID")
+  @@ignore
+}
+
+model tPayment_Other {
+  Payment_Other_ID           Int       @id(map: "tPayment_Other$PrimaryKey") @default(autoincrement())
+  MemberID                   Int?      @default(0, map: "DF__tPayment___Membe__40C49C62")
+  ReceiptNo                  String?   @db.NVarChar(255)
+  Payment_Other_mainCategory String?   @db.NVarChar(255)
+  Payment_Other_subCategory  String?   @db.NVarChar(255)
+  Payment_Other_Amount       String?   @db.NVarChar(255)
+  Payment_Other_Date         DateTime?
+  Payment_Other_PaidBy       String?   @db.NVarChar(255)
+  Payment_Other_IssuedBy     String?   @db.NVarChar(255)
+  Payment_Other_Description  String?   @db.NVarChar(255)
+  Payment_Other_Notes        String?   @db.NVarChar(Max)
+  LogRegDate                 DateTime?
+  LogRegStaff                String?   @db.NVarChar(255)
+  LogRegNote                 String?   @db.NVarChar(Max)
+
+  @@index([MemberID], map: "tPayment_Other$MemberID")
+  @@index([Payment_Other_ID], map: "tPayment_Other$Payment_Other_ID")
+}
+
+model tPayment_Other_Category {
+  ReportCategory_ID              Int     @id(map: "tPayment_Other_Category$PrimaryKey") @default(autoincrement())
+  ReportCategory_Code            String? @db.NVarChar(255)
+  Category_lvl_1                 String? @db.NVarChar(255)
+  Category_lvl_2                 String? @db.NVarChar(255)
+  Category_lvl_2_follow_lvl_1_ID Int?    @default(0, map: "DF__tPayment___Categ__41B8C09B")
+
+  @@index([Category_lvl_2_follow_lvl_1_ID], map: "tPayment_Other_Category$Category_lvl_2_follow_lvl_1_ID")
+  @@index([ReportCategory_Code], map: "tPayment_Other_Category$ReportCategory_Code")
+}
+
+model tPayment_Refund {
+  Refund_ID          Int       @id(map: "tPayment_Refund$PrimaryKey") @default(autoincrement())
+  MemberID           Int?      @default(0, map: "DF__tPayment___Membe__42ACE4D4")
+  ReceiptNo          String?   @db.NVarChar(255)
+  Refund_Amount      String?   @db.NVarChar(255)
+  Refund_Date        DateTime?
+  Refund_PaidBy      String?   @db.NVarChar(255)
+  Refund_IssuedBy    String?   @db.NVarChar(255)
+  Refund_Description String?   @db.NVarChar(255)
+  Refund_Notes       String?   @db.NVarChar(Max)
+  LogRegDate         DateTime?
+  LogRegStaff        String?   @db.NVarChar(255)
+  LogRegNote         String?   @db.NVarChar(Max)
+
+  @@index([MemberID], map: "tPayment_Refund$MemberID")
+  @@index([Refund_ID], map: "tPayment_Refund$Payment_Other_ID")
+}
+
+model tPaymentBy {
+  ID            Int     @id(map: "tPaymentBy$PrimaryKey") @default(autoincrement())
+  PaymentByCode String? @db.NVarChar(255)
+  PaymentBy     String? @db.NVarChar(255)
+
+  @@index([PaymentByCode], map: "tPaymentBy$PaymentByCode")
+}
+
+model tPaymentCategory1 {
+  ReportCategory_ID              Int     @id(map: "tPaymentCategory1$PrimaryKey") @default(autoincrement())
+  ReportCategory_Code            String? @db.NVarChar(255)
+  Category_lvl_1                 String? @db.NVarChar(255)
+  Category_lvl_2                 String? @db.NVarChar(255)
+  Category_lvl_2_follow_lvl_1_ID Int?    @default(0, map: "DF__tPaymentC__Categ__43A1090D")
+
+  @@index([Category_lvl_2_follow_lvl_1_ID], map: "tPaymentCategory1$Category_lvl_2_follow_lvl_1_ID")
+  @@index([ReportCategory_Code], map: "tPaymentCategory1$ReportCategory_Code")
+}
+
+model tPaymentInvoice {
+  ID                Int       @id(map: "tPaymentInvoice$PrimaryKey") @default(autoincrement())
+  PaymentCategoryID Int?      @default(0, map: "DF__tPaymentI__Payme__44952D46")
+  MemberID          Int?      @default(0, map: "DF__tPaymentI__Membe__4589517F")
+  CustomerNameF     String?   @db.NVarChar(255)
+  CustomerNameL     String?   @db.NVarChar(255)
+  Payment           Float?    @default(0, map: "DF__tPaymentI__Payme__467D75B8") @db.Money
+  PaymentBy         String?   @db.NVarChar(255)
+  PaymentDate       DateTime?
+  PaymentInvoiceNo  String?   @db.NVarChar(50)
+  PaymentStaff      String?   @db.NVarChar(255)
+  Notes             String?   @db.NVarChar(Max)
+  LogRegDate        DateTime?
+  LogRegStaff       String?   @db.NVarChar(255)
+  LogRegNote        String?   @db.NVarChar(Max)
+
+  @@index([MemberID], map: "tPaymentInvoice$MemberID")
+  @@index([PaymentCategoryID], map: "tPaymentInvoice$PaymentCategoryID")
+}
+
+model tSignInDaily {
+  ID              Int       @id(map: "tSignInDaily$PrimaryKey") @default(autoincrement())
+  MemberID        Int?      @default(0, map: "DF__tSignInDa__Membe__477199F1")
+  SignInName      String?   @db.NVarChar(255)
+  SignInDateTime  DateTime?
+  SignOutDateTime DateTime?
+  SignInStatus    String?   @db.NVarChar(255)
+  SignInFromHome  Boolean?  @default(false, map: "DF__tSignInDa__SignI__4865BE2A")
+  SignInIP        String?   @db.NVarChar(20)
+}
